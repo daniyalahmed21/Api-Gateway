@@ -3,7 +3,6 @@ import { SERVER_CONFIG } from "./config/serverConfig.js";
 import apiRouter from "./routes/index.js";
 import Middlewares from "./middlewares/index.js";
 import { sequelize } from "./config/sequelize.js";
-// import "./models/associations.js";
 
 const app = Express();
 
