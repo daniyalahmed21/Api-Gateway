@@ -1,9 +1,9 @@
 import Express from "express";
 
-import flightRouter from "./flightRoutes.js";
+import userRouter from "./userRoutes.js";
 
 const v1Router = Express.Router();
 
-v1Router.use("/flights", flightRouter);
+v1Router.use("/users", userRouter);
 
 export default v1Router;

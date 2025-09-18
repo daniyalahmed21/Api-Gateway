@@ -1,6 +1,3 @@
-import * as FlightController from "./flightController.js";
+import * as UserController from "./userController.js";
 
-export  {
-
-  FlightController
-};
+export { UserController };

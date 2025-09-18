@@ -9,6 +9,7 @@ export const SERVER_CONFIG = {
     USER: process.env.DB_USER || "root",
     PASS: process.env.DB_PASS || "",
     HOST: process.env.DB_HOST || "localhost",
-    DIALECT: process.env.DB_DIALECT || "mysql"
+    DIALECT: process.env.DB_DIALECT || "mysql",
+    SALT_ROUNDS : process.env.SALT_ROUNDS || 10,
   }
 };
