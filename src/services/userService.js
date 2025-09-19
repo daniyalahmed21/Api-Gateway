@@ -1,5 +1,5 @@
 import Repositories from "../repositories/index.js";
-import { checkPassword, createToken } from "../utils/auth.js";
+import { checkPassword, createToken, verifyToken } from "../utils/auth.js";
 import AppError from "../utils/errors/appError.js";
 
 export default class UserService {
@@ -27,7 +27,7 @@ export default class UserService {
       if (!isMatch) {
         throw new AppError("Invalid credentials");
       }
-      const token = await createToken({ id: user.id , email: user.email });
+      const token = await createToken({ id: user.id, email: user.email });
 
       return { token };
     } catch (error) {
@@ -35,5 +35,16 @@ export default class UserService {
     }
   }
 
- 
+  async isAuthenticated(token) {
+    try {
+      const decoded = await verifyToken(token);
+      const user = await this.userRepository.getById(decoded.id);
+      if (!user) {
+        throw new AppError("User not found");
+      }
+      return user.id;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

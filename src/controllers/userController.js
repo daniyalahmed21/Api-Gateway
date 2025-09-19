@@ -13,6 +13,6 @@ export const createUser = asyncHandler(async (req, res) => {
 export const signIn = asyncHandler(async (req, res) => {  
   const { email, password } = req.body;
   const result = await userService.signIn({ email, password });
-  
+
   sendSuccess(res, result, "User signed in successfully", StatusCodes.OK);
 });

@@ -22,3 +22,12 @@ export async function createToken(payload) {
     throw error;
   }
 }
+
+export async function verifyToken(token) {
+  try {
+    const decoded = jwt.verify(token, SERVER_CONFIG.JWT_SECRET_KEY);
+    return decoded;
+  } catch (error) {
+    throw error;
+  }
+}
