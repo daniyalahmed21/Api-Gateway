@@ -1,7 +1,7 @@
-import { validateAirplaneData } from ".//airplaneMiddlewares.js";
+import { validateAuthRequest } from "./authMiddlewares.js";
 import errorHandler from "./errorHandler.js";
 
 export default {
-  validateAirplaneData,
+  validateAuthRequest,
   errorHandler,
 };
