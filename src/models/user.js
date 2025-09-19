@@ -29,10 +29,11 @@ User.init(
 );
 
 User.beforeCreate((user, options) => {
-  const saltRounds = 10;
-  const hashedPassword = bcrypt.hashSync(user.password, SERVER_CONFIG.SALT_ROUNDS);
+  const hashedPassword = bcrypt.hashSync(
+    user.password,
+    SERVER_CONFIG.SALT_ROUNDS
+  );
   user.password = hashedPassword;
 });
-
 
 export default User;
