@@ -1,48 +1,39 @@
-import { StatusCodes } from "http-status-codes";
-import Services from "../services/index.js";
+import { StatusCodes } from 'http-status-codes';
+import Services from '../services/index.js';
+import { sendError } from '../utils/responseHandler.js';
 
 const ServicesInstance = new Services.UserService();
 
 export const validateAuthRequest = (req, res, next) => {
   const { email, password } = req.body;
 
-  if (!email || typeof email !== "string") {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      status: false,
-      data: {},
-      message: "Invalid or missing email",
-      error: { explanation: "Email is required and should be a string" },
-    });
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || typeof email !== 'string' || !emailRegex.test(email)) {
+    return sendError(res, 'Invalid or missing email', ['Email is required and should be a valid email address'], StatusCodes.BAD_REQUEST);
   }
 
-  if (!password || typeof password !== "string" || password.length < 6) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      status: "false",
-      data: {},
-      message: "Invalid or missing password",
-      error: {
-        explanation:
-          "Password is required and should be at least 6 characters long",
-      },
-    });
+  if (!password || typeof password !== 'string' || password.length < 6) {
+    return sendError(res, 'Invalid or missing password', ['Password is required and should be at least 6 characters long'], StatusCodes.BAD_REQUEST);
   }
 
   next();
 };
 
 export const checkAuth = (req, res, next) => {
-  const authHeader = req.headers["x-access-token"];
+  const authHeader = req.headers['x-access-token'];
 
   if (!authHeader) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      status: false,
-      data: {},
-      message: "Unauthorized",
-      error: { explanation: "No token provided" },
-    });
+    return sendError(res, 'Unauthorized', ['No token provided'], StatusCodes.UNAUTHORIZED);
   }
 
-  const token = ServicesInstance.isAuthenticated(authHeader);
-  req.userId = token;
-  next();
+  const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
+
+  try {
+    const userId = ServicesInstance.isAuthenticated(token);
+    req.userId = userId;
+    next();
+  } catch (error) {
+    return sendError(res, 'Unauthorized', [error.message], StatusCodes.UNAUTHORIZED);
+  }
 };
+
