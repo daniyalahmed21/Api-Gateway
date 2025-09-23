@@ -5,11 +5,16 @@ import AppError from "../utils/errors/appError.js";
 export default class UserService {
   constructor() {
     this.userRepository = new Repositories.UserRepository();
+    this.roleRepository = new Repositories.RoleRepository();
   }
   async createUser(data) {
     try {
       const user = await this.userRepository.create(data);
-
+      const role = await this.roleRepository.getRoleByName("customer");
+      if (!role) {
+        throw new AppError("Role not found");
+      }
+      await user.addRole(role);
       return user;
     } catch (error) {
       throw error;

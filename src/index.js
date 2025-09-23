@@ -4,6 +4,7 @@ import apiRouter from "./routes/index.js";
 import Middlewares from "./middlewares/index.js";
 import { rateLimit } from "express-rate-limit";
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import "./models/associations.js";
 
 const limiter = rateLimit({
   windowMs: 2 * 60 * 1000,
