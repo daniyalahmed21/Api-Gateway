@@ -37,3 +37,20 @@ export const checkAuth = (req, res, next) => {
   }
 };
 
+export async function isAdmin(req, res, next) {
+  try {
+    const user = await ServicesInstance.getUserById(req.userId);
+    if (!user) {
+      return sendError(res, 'User not found', ['No user found for the provided token'], StatusCodes.NOT_FOUND);
+    }
+
+    const isAdmin = await ServicesInstance.isAdmin(user.id);
+    if (!isAdmin) {
+      return sendError(res, 'Forbidden', ['User is not an admin'], StatusCodes.FORBIDDEN);
+    }
+
+    next();
+  } catch (error) {
+    return sendError(res, 'Unauthorized', [error.message], StatusCodes.UNAUTHORIZED);
+  }
+}

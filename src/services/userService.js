@@ -1,7 +1,7 @@
 import Repositories from "../repositories/index.js";
 import { checkPassword, createToken, verifyToken } from "../utils/auth.js";
-import AppError from "../utils/errors/app-error.js";
 import { StatusCodes } from "http-status-codes";
+import AppError from "../utils/errors/appError.js";
 
 export default class UserService {
   constructor() {
