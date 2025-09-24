@@ -10,4 +10,6 @@ export default class RoleRepository extends CrudRepository {
     const role = await this.model.findOne({ where: { name } });
     return role;
   }
+
+
 }
